@@ -3,33 +3,33 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         // Inicializar as coleções
-        ListaEstudantes listaEstudantes = new ListaEstudantes();
+        ListaEstudante listaEstudante = new ListaEstudante();
         CadastroDisciplinas cadastroDisciplinas = new CadastroDisciplinas();
         HistoricoNotas historicoNotas = new HistoricoNotas();
 
         // Carregar dataset (Parte D - Item 1)
-        carregarDataset(listaEstudantes, cadastroDisciplinas, historicoNotas);
+        carregarDataset(listaEstudante, cadastroDisciplinas, historicoNotas);
 
         // Exibir resultados
         System.out.println("=== TRABALHO DE POO - COLEÇÕES JAVA ===\n");
 
         // Item 2: Exibir estudantes ordenados por nome
-        exibirEstudantesOrdenados(listaEstudantes);
+        exibirEstudantesOrdenados(listaEstudante);
 
         // Item 3: Exibir disciplinas (ordem de inserção)
         exibirDisciplinas(cadastroDisciplinas);
 
         // Item 4: Exibir matrículas e notas
-        exibirMatriculasENotas(listaEstudantes, historicoNotas);
+        exibirMatriculasENotas(listaEstudante, historicoNotas);
 
         // Item 5: Relatórios
-        exibirRelatorios(listaEstudantes, cadastroDisciplinas, historicoNotas);
+        exibirRelatorios(listaEstudante, cadastroDisciplinas, historicoNotas);
 
         // Extra: Buscar estudantes por substring
-        buscarEstudantesPorSubstring(listaEstudantes, historicoNotas);
+        buscarEstudantesPorSubstring(listaEstudante, historicoNotas);
     }
 
-    private static void carregarDataset(ListaEstudantes listaEstudantes,
+    private static void carregarDataset(ListaEstudante listaEstudantes,
                                         CadastroDisciplinas cadastroDisciplinas,
                                         HistoricoNotas historicoNotas) {
         // Carregar estudantes
@@ -40,10 +40,10 @@ public class Main {
         listaEstudantes.adicionarEstudante(new Estudante(5, "Elisa"));
 
         // Carregar disciplinas
-        cadastroDisciplinas.adicionarDisciplina(new Disciplina("MAT101", "Matemática"));
-        cadastroDisciplinas.adicionarDisciplina(new Disciplina("PRG201", "Programação"));
-        cadastroDisciplinas.adicionarDisciplina(new Disciplina("BD301", "Banco de Dados"));
-        cadastroDisciplinas.adicionarDisciplina(new Disciplina("EDF110", "Educação Física"));
+        cadastroDisciplinas.adicionarDisciplinas(new Disciplina("MAT101", "Matemática"));
+        cadastroDisciplinas.adicionarDisciplinas(new Disciplina("PRG201", "Programação"));
+        cadastroDisciplinas.adicionarDisciplinas(new Disciplina("BD301", "Banco de Dados"));
+        cadastroDisciplinas.adicionarDisciplinas(new Disciplina("EDF110", "Educação Física"));
 
         // Carregar matrículas/notas
         historicoNotas.adicionarMatricula(1, "MAT101", 8.5);
@@ -56,15 +56,15 @@ public class Main {
         historicoNotas.adicionarMatricula(5, "EDF110", 10.0);
     }
 
-    private static void exibirEstudantesOrdenados(ListaEstudantes listaEstudantes) {
+    private static void exibirEstudantesOrdenados(ListaEstudante listaEstudantes) {
         System.out.println("== Lista de Estudantes (ordem de cadastro) ==");
-        for (Estudante e : listaEstudantes.getTodosEstudantes()) {
+        for (Estudante e : listaEstudantes.obterTodosEstudantes()) {
             System.out.println(e);
         }
 
         System.out.println("\n== Lista de Estudantes (ordenada) ==");
-        listaEstudantes.ordenarEstudantesPorNome();
-        List<Estudante> ordenados = listaEstudantes.getTodosEstudantes();
+        listaEstudantes.ordenarPorNome();
+        List<Estudante> ordenados = listaEstudantes.obterTodosEstudantes();
         for (int i = 0; i < ordenados.size(); i++) {
             System.out.print(ordenados.get(i).getNome());
             if (i < ordenados.size() - 1) System.out.print(", ");
@@ -76,7 +76,7 @@ public class Main {
         System.out.println("== Disciplinas (ordem de inserção) ==");
         List<Disciplina> disciplinas = cadastroDisciplinas.obterTodasDisciplinas();
         for (int i = 0; i < disciplinas.size(); i++) {
-            System.out.print(disciplinas.get(i).getCodigo());
+            System.out.print(disciplinas.get(i).getCodgo());
             if (i < disciplinas.size() - 1) System.out.print(", ");
         }
         System.out.println("\n");
@@ -85,9 +85,9 @@ public class Main {
         System.out.println("(nenhuma)\n");
     }
 
-    private static void exibirMatriculasENotas(ListaEstudantes listaEstudantes, HistoricoNotas historicoNotas) {
+    private static void exibirMatriculasENotas(ListaEstudante listaEstudantes, HistoricoNotas historicoNotas) {
         System.out.println("== Matrículas ==");
-        for (Estudante e : listaEstudantes.getTodosEstudantes()) {
+        for (Estudante e : listaEstudantes.obterTodosEstudantes()) {
             List<Matricula> matriculas = historicoNotas.obterMatriculas(e.getId());
             if (!matriculas.isEmpty()) {
                 System.out.print(e.getNome() + ": ");
@@ -102,14 +102,14 @@ public class Main {
         System.out.println();
     }
 
-    private static void exibirRelatorios(ListaEstudantes listaEstudantes,
+    private static void exibirRelatorios(ListaEstudante listaEstudantes,
                                          CadastroDisciplinas cadastroDisciplinas,
                                          HistoricoNotas historicoNotas) {
         // Médias por disciplina
         System.out.println("== Médias por Disciplina ==");
         for (Disciplina d : cadastroDisciplinas.obterTodasDisciplinas()) {
-            double media = historicoNotas.mediaDaDisciplina(d.getCodigo());
-            System.out.printf("%s: %.1f\n", d.getCodigo(), media);
+            double media = historicoNotas.mediaDaDisciplina(d.getCodgo());
+            System.out.printf("%s: %.1f\n", d.getCodgo(), media);
         }
         System.out.println();
 
@@ -129,7 +129,7 @@ public class Main {
             System.out.println("(nenhum)");
         } else {
             for (int i = 0; i < aprovados.size(); i++) {
-                Estudante e = listaEstudantes.buscarPorId(aprovados.get(i));
+                Estudante e = listaEstudantes.obterEstudantePorId(aprovados.get(i));
                 System.out.print(e.getNome());
                 if (i < aprovados.size() - 1) System.out.print(", ");
             }
@@ -141,9 +141,9 @@ public class Main {
         System.out.println("== Disciplinas com média < 6.0 ==");
         boolean encontrou = false;
         for (Disciplina d : cadastroDisciplinas.obterTodasDisciplinas()) {
-            double media = historicoNotas.mediaDaDisciplina(d.getCodigo());
+            double media = historicoNotas.mediaDaDisciplina(d.getCodgo());
             if (media < 6.0) {
-                System.out.printf("%s: %.1f\n", d.getCodigo(), media);
+                System.out.printf("%s: %.1f\n", d.getCodgo(), media);
                 encontrou = true;
             }
         }
@@ -153,9 +153,9 @@ public class Main {
         System.out.println();
     }
 
-    private static void buscarEstudantesPorSubstring(ListaEstudantes listaEstudantes, HistoricoNotas historicoNotas) {
+    private static void buscarEstudantesPorSubstring(ListaEstudante listaEstudantes, HistoricoNotas historicoNotas) {
         System.out.println("== Extra: Buscar estudantes contendo 'a' ==");
-        List<Estudante> encontrados = listaEstudantes.buscarEstudantesPorNome("a");
+        List<Estudante> encontrados = listaEstudantes.obterEstudantePorNome("a");
         for (Estudante e : encontrados) {
             double media = historicoNotas.mediaDoEstudante(e.getId());
             System.out.printf("%s - Média: %.2f\n", e.getNome(), media);
